@@ -1,4 +1,4 @@
-name: Container Scanning
+name: Publish kaniko-git image
 on: [push, pull_request]
 env:
   IMAGE_NAME: kaniko-git-ol7
