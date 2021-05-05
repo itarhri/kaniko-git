@@ -1,7 +1,6 @@
 FROM gcr.io/kaniko-project/executor as kaniko
 
 FROM oraclelinux:7-slim
-RUN yum update; yum install git -q -y
 
 COPY --from=kaniko /kaniko /kaniko
 
