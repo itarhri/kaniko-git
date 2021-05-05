@@ -1,10 +1,8 @@
 FROM gcr.io/kaniko-project/executor:debug as kaniko
 
-FROM ghcr.io/oracle/oraclelinux:7-slim
+FROM centos:7
 
-RUN yum clean all
-RUN yum update -y
-RUN yum install git -q -y
+RUN yum -y update; yum install git -q -y; rm -rf /var/cache /var/log/dnf* /var/log/yum.*;
 
 COPY --from=kaniko /kaniko/executor /kaniko/
 COPY --from=kaniko /kaniko/.docker /kaniko/.docker
