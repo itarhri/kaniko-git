@@ -1,6 +1,6 @@
 FROM gcr.io/kaniko-project/executor as kaniko
 
-FROM oraclelinux:7-slim
+FROM oraclelinux:8-slim
 
 COPY --from=kaniko /kaniko /kaniko
 
