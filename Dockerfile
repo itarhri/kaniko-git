@@ -2,10 +2,10 @@ FROM gcr.io/kaniko-project/executor:debug as kaniko
 
 FROM oraclelinux:7-slim
 
-RUN dnf upgrade --refresh rpm glibc && \
+RUN yum upgrade --refresh rpm glibc && \
     rm /var/lib/rpm/.rpm.lock && \
-    dnf upgrade dnf && \
-    dnf install git-all -q -y
+    yum upgrade dnf && \
+    yum install git-all -q -y
 
 COPY --from=kaniko /kaniko/executor /kaniko/
 COPY --from=kaniko /kaniko/.docker /kaniko/.docker
