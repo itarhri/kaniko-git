@@ -1,17 +1,16 @@
-FROM gcr.io/kaniko-project/executor:debug as kaniko
+FROM gcr.io/kaniko-project/executor as kaniko
 
-FROM centos:7
+FROM alpine
+RUN apk update
+RUN apk add bash git coreutils
 
-RUN yum -y update; yum install git -q -y; rm -rf /var/cache /var/log/dnf* /var/log/yum.*;
-
-COPY --from=kaniko /kaniko/executor /kaniko/
-COPY --from=kaniko /kaniko/.docker /kaniko/.docker
+COPY --from=kaniko /kaniko /kaniko
 
 ENV HOME /root
 ENV USER /root
-ENV PATH /usr/local/bin:/kaniko:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-ENV SSL_CERT_DIR=/kaniko/ssl/certs
+ENV PATH $PATH:/kaniko
+ENV SSL_CERT_DIR /kaniko/ssl/certs
 ENV DOCKER_CONFIG /kaniko/.docker/
-WORKDIR /workspace
+ENV DOCKER_CREDENTIAL_GCR_CONFIG /kaniko/.config/gcloud/docker_credential_gcr_config.json
 
-ENTRYPOINT ["/kaniko/executor"]
+SHELL ["/bin/bash", "-c"]
