@@ -1,9 +1,10 @@
 FROM gcr.io/kaniko-project/executor:debug as kaniko
 
-FROM oraclelinux:7-slim
+FROM ghcr.io/oracle/oraclelinux:7-slim
 
-RUN rm /var/lib/rpm/.rpm.lock && \
-    yum install git-all -q -y
+RUN yum clean all
+RUN yum update -y
+RUN yum install git -q -y
 
 COPY --from=kaniko /kaniko/executor /kaniko/
 COPY --from=kaniko /kaniko/.docker /kaniko/.docker
