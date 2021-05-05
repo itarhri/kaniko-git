@@ -1,8 +1,7 @@
 FROM gcr.io/kaniko-project/executor as kaniko
 
-FROM alpine
-RUN apk update
-RUN apk add bash git coreutils
+FROM oraclelinux:7-slim
+RUN yum update; yum install git -q -y
 
 COPY --from=kaniko /kaniko /kaniko
 
