@@ -2,10 +2,9 @@ FROM gcr.io/kaniko-project/executor:debug as kaniko
 
 FROM oraclelinux:7-slim
 
-RUN mv /var/lib/rpm/__db* /tmp && \
+RUN rm /var/lib/rpm/.rpm.lock && \
     yum clean all && \
     yum update -y && \
-    rm -i /tmp/__db* && \
     yum install git-all -q -y
 
 COPY --from=kaniko /kaniko/executor /kaniko/
