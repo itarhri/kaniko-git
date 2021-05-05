@@ -1,16 +1,20 @@
 FROM gcr.io/kaniko-project/executor:debug as kaniko
 
-FROM alpine
-RUN apk update
-RUN apk add bash git coreutils
+FROM alpine:3.12.0
 
-COPY --from=kaniko /kaniko /kaniko
+RUN apk update && \
+  apk upgrade && \
+  apk add --no-cache git \
+  && rm -rf /var/lib/apt/lists/*
+
+COPY --from=kaniko /kaniko/executor /kaniko/
+COPY --from=kaniko /kaniko/.docker /kaniko/.docker
 
 ENV HOME /root
 ENV USER /root
-ENV PATH $PATH:/kaniko
-ENV SSL_CERT_DIR /kaniko/ssl/certs
+ENV PATH /usr/local/bin:/kaniko:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV SSL_CERT_DIR=/kaniko/ssl/certs
 ENV DOCKER_CONFIG /kaniko/.docker/
-ENV DOCKER_CREDENTIAL_GCR_CONFIG /kaniko/.config/gcloud/docker_credential_gcr_config.json
+WORKDIR /workspace
 
 ENTRYPOINT ["/kaniko/executor"]
