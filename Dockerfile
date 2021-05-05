@@ -3,8 +3,6 @@ FROM gcr.io/kaniko-project/executor:debug as kaniko
 FROM oraclelinux:7-slim
 
 RUN rm /var/lib/rpm/.rpm.lock && \
-    yum clean all && \
-    yum update -y && \
     yum install git-all -q -y
 
 COPY --from=kaniko /kaniko/executor /kaniko/
