@@ -1,11 +1,8 @@
 FROM gcr.io/kaniko-project/executor:debug as kaniko
 
-FROM alpine:3.12.0
+FROM oraclelinux:7-slim
 
-RUN apk update && \
-  apk upgrade && \
-  apk add --no-cache git \
-  && rm -rf /var/lib/apt/lists/*
+RUN yum install git -q -y
 
 COPY --from=kaniko /kaniko/executor /kaniko/
 COPY --from=kaniko /kaniko/.docker /kaniko/.docker
