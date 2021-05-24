@@ -1,6 +1,6 @@
 FROM gcr.io/kaniko-project/executor as kaniko
 
-FROM oraclelinux:7-slim
+FROM registry.fedoraproject.org/fedora:latest
 
 COPY --from=kaniko /kaniko /kaniko
 
